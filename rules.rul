@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+<!ENTITY rdf   "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+<!ENTITY rdfs  "http://www.w3.org/2000/01/rdf-schema#">
+<!ENTITY rul   "http://ns.inria.fr/edelweiss/2011/rule#">
+]>
+
+<rdf:RDF xmlns:rdfs="&rdfs;" xmlns:rdf="&rdf;"   xmlns = '&rul;' >
+ 
+<rule>
+<body>
+<!-- Define the even and odd  MonthOfYear-->
+<![CDATA[
+PREFIX time: <http://example.org/timonto/>
+construct  {
+   time:January	time:even		false.
+   time:February	time:even		true.
+   time:March		time:even		false.
+   time:April		time:even		true.
+   time:May		time:even		false.
+   time:June		time:even		true.
+   time:July		time:even		false.
+   time:August		time:even		true.
+   time:September	time:even		false.
+   time:October	time:even		true.
+   time:November	time:even		false.
+   time:December	time:even		true.
+}
+Where{}
+]]>
+</body>
+</rule>
+
+<rule>
+<body>
+<![CDATA[
+PREFIX time: <http://example.org/timonto/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+construct  {
+   ?x time:even true.
+   ?x time:month "04"^^xsd:gMonth.
+}
+Where {
+	 ?x a time:April
+	 }
+]]>
+</body>
+</rule>
+
+<rule>
+<body>
+<![CDATA[
+PREFIX time: <http://example.org/timonto/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+construct  {
+   ?x time:even  true.
+   ?x time:month "02"^^xsd:gMonth
+}
+Where {
+	?x a time:February}
+]]>
+</body>
+</rule>
+
+<rule>
+<body>
+<![CDATA[
+PREFIX time: <http://example.org/timonto/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+construct  {
+   ?x time:even  true.
+   ?x time:month "06"^^xsd:gMonth.
+}
+Where {
+	?x a time:June}
+]]>
+</body>
+</rule>
+
+<rule>
+<body>
+<![CDATA[
+PREFIX time: <http://example.org/timonto/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+construct  {
+   ?x time:even true.
+   ?x time:month "08"^^xsd:gMonth.
+}
+Where {
+	?x a time:August}
+]]>
+</body>
+</rule>
+
+<rule>
+<body>
+<![CDATA[
+PREFIX time: <http://example.org/timonto/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+construct  {
+   ?x time:even true.
+   ?x time:month "10"^^xsd:gMonth.
+}
+Where {
+	?x a time:October}
+]]>
+</body>
+</rule>
+
+<rule>
+<body>
+<![CDATA[
+PREFIX time: <http://example.org/timonto/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+construct  {
+   ?x time:even  true.
+   ?x time:month "12"^^xsd:gMonth
+}
+Where {
+	?x a time:December}
+]]>
+</body>
+</rule>
+
+<rule>
+<body>
+<![CDATA[
+PREFIX time: <http://example.org/timonto/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+construct  {
+   ?x time:even  false.
+   ?x time:month "01"^^xsd:gMonth.
+}
+Where {
+	?x a time:January}
+]]>
+</body>
+</rule>
+
+<rule>
+<body>
+<![CDATA[
+PREFIX time: <http://example.org/timonto/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+construct  {
+   ?x time:even  false.
+   ?x time:month "03"^^xsd:gMonth.
+}
+Where {
+	?x a time:March}
+]]>
+</body>
+</rule>
+
+<rule>
+<body>
+<![CDATA[
+PREFIX time: <http://example.org/timonto/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+construct  {
+   ?x time:even  false.
+   ?x time:month "05"^^xsd:gMonth.
+}
+Where {
+	?x a time:May}
+]]>
+</body>
+</rule>
+
+<rule>
+<body>
+<![CDATA[
+PREFIX time: <http://example.org/timonto/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+construct  {
+   ?x time:even  false.
+   ?x time:month "07"^^xsd:gMonth.
+}
+Where {
+	?x a time:July}
+]]>
+</body>
+</rule>
+
+<rule>
+<body>
+<![CDATA[
+PREFIX time: <http://example.org/timonto/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+construct  {
+   ?x time:even  false.
+   ?x time:month "9"^^xsd:gMonth
+}
+Where {
+	?x a time:September}
+]]>
+</body>
+</rule>
+
+<rule>
+<body>
+<![CDATA[
+PREFIX time: <http://example.org/timonto/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+construct  {
+   ?x time:even  false.
+   ?x time:month "11"^^xsd:gMonth.
+}
+Where {
+	?x a time:November}
+]]>
+</body>
+</rule>
+
+<rule>
+<body>
+<![CDATA[
+PREFIX time: <http://example.org/timonto/>
+construct  {
+   ?x a time:April
+}
+Where {
+	?x time:month 4}
+]]>
+</body>
+</rule>
+
+<rule>
+<body>
+<![CDATA[
+PREFIX time: <http://example.org/timonto/>
+construct  {
+   ?x a time:February
+}
+Where {
+	?x time:month 2}
+]]>
+</body>
+</rule>
+
+<rule>
+<body>
+<![CDATA[
+PREFIX time: <http://example.org/timonto/>
+construct  {
+   ?x a time:June
+}
+Where {
+	?x time:month 6}
+]]>
+</body>
+</rule>
+
+<rule>
+<body>
+<![CDATA[
+PREFIX time: <http://example.org/timonto/>
+construct  {
+   ?x a time:August
+}
+Where {
+	?x time:month 8}
+]]>
+</body>
+</rule>
+
+<rule>
+<body>
+<![CDATA[
+PREFIX time: <http://example.org/timonto/>
+construct  {
+   ?x a time:October
+}
+Where {
+	?x time:month 10}
+]]>
+</body>
+</rule>
+
+<rule>
+<body>
+<![CDATA[
+PREFIX time: <http://example.org/timonto/>
+construct  {
+   ?x a time:December
+}
+Where {
+	?x time:month 12}
+]]>
+</body>
+</rule>
+
+<rule>
+<body>
+<![CDATA[
+PREFIX time: <http://example.org/timonto/>
+construct  {
+   ?x a time:January
+}
+Where {
+	?x time:month 1}
+]]>
+</body>
+</rule>
+
+<rule>
+<body>
+<![CDATA[
+PREFIX time: <http://example.org/timonto/>
+construct  {
+   ?x a time:March
+}
+Where {
+	?x time:month 3}
+]]>
+</body>
+</rule>
+
+<rule>
+<body>
+<![CDATA[
+PREFIX time: <http://example.org/timonto/>
+construct  {
+   ?x a time:May
+}
+Where {
+	?x time:month 5}
+]]>
+</body>
+</rule>
+
+<rule>
+<body>
+<![CDATA[
+PREFIX time: <http://example.org/timonto/>
+construct  {
+   ?x a time:July
+}
+Where {
+	?x time:month 7}
+]]>
+</body>
+</rule>
+
+<rule>
+<body>
+<![CDATA[
+PREFIX time: <http://example.org/timonto/>
+construct  {
+   ?x a time:September
+}
+Where {
+	?x time:month 9}
+]]>
+</body>
+</rule>
+
+<rule>
+<body>
+<![CDATA[
+PREFIX time: <http://example.org/timonto/>
+construct  {
+   ?x a time:November
+}
+Where {
+	?x time:month 11}
+]]>
+</body>
+</rule>
+
+<rule>
+<body>
+<!-- If X before Y then Y after X -->
+<![CDATA[
+PREFIX time: <http://example.org/timonto/>
+construct  {
+   ?y time:after ?x
+}
+Where {
+	?x time:before ?y}
+]]>
+</body>
+</rule>
+
+<rule>
+<body>
+<!-- If X after Y then Y before X -->
+<![CDATA[
+PREFIX time: <http://example.org/timonto/>
+construct  {
+   ?y time:before ?x
+}
+Where {
+	?x time:after ?y}
+]]>
+</body>
+</rule>
+
+<rule>
+<body>
+<!-- If X after Y and Y after Z then X after Z -->
+<![CDATA[
+PREFIX time: <http://example.org/timonto/>
+construct  {
+   ?x time:after ?z
+}
+Where {
+	?x time:after ?y
+	?y time:after ?z}
+]]>
+</body>
+</rule>
+
+<rule>
+<body>
+<!-- Defining of WeekEnd concept. We choose to define it 
+     on the data because the concept of WeekEnd changes 
+     according the culture or the country.
+-->
+<![CDATA[
+PREFIX time: <http://example.org/timonto/>
+PREFIX data: <http://example.org/data/>
+construct  {
+   data:WeekEnd a rdfs:Class.
+   time:Saturday rdfs:subClassOf  data:WeekEnd.
+   time:Sunday   rdfs:subClassOf  data:WeekEnd.
+}
+Where {}
+]]>
+</body>
+</rule>
+
+<rule>
+<body>
+<!-- Defining of Working Day (It can be define in timonto) -->
+<![CDATA[
+PREFIX time: <http://example.org/timonto/>
+PREFIX data: <http://example.org/data/>
+construct  {
+   data:WorkingDay a rdfs:Class.
+   ?x rdfs:subClassOf  data:WorkingDay.
+}
+Where {
+	?x a time:DayOfWeek.
+	FILTER NOT EXISTS {?x rdfs:subClassOf data:WeekEnd}
+}
+]]>
+</body>
+</rule>
+
+<rule>
+<body>
+<!-- Defining Leap Year (year mod 4 = 0 and year mod 100 !=0)-->
+<![CDATA[
+PREFIX time: <http://example.org/timonto/>
+construct  {
+  	?x time:leapYear true.
+}
+Where {?x a time:Year;
+	     time:year ?y.
+      BIND((?y / 4) as ?y1)
+	 BIND(ROUND(?y1) as ?y2)
+	 FILTER(?y1 = ?y2)
+	 BIND((?y / 100) as ?y3)
+	 BIND(ROUND(?y3) as ?y4)
+	 FILTER(?y3 != ?y4)
+}
+]]>
+</body>
+</rule>
+
+<rule>
+<body>
+<!-- Defining Leap Year (year mod 400 = 0) -->
+<![CDATA[
+PREFIX time: <http://example.org/timonto/>
+construct  {
+  	?x time:leapYear true
+}
+Where {?x a time:Year;
+	     time:year ?y.
+      BIND((?y / 400) as ?y1)
+	 BIND(ROUND(?y1) as ?y2)
+	 FILTER(?y1 = ?y2)
+}
+]]>
+</body>
+</rule>
+
+<rule>
+<body>
+<!-- leapYear is disjont with non leapYear-->
+<![CDATA[
+PREFIX time: <http://example.org/timonto/>
+construct  {
+  	?x time:leapYear false
+}
+Where {?x a time:Year.
+	  FILTER NOT EXISTS {?x time:leapYear true}
+	  FILTER EXISTS {?x time:year ?y}
+}
+]]>
+</body>
+</rule>
+
+<rule>
+<body>
+<!--Number of days of month-->
+<![CDATA[
+PREFIX time: <http://example.org/timonto/>
+construct  {
+  		?x time:numberOfDayOfMonth 31
+}
+Where {?x time:month ?p.
+       FILTER(?p IN (1, 3, 5, 7, 8, 10, 12))
+}
+]]>
+</body>
+</rule>
+
+<rule>
+<body>
+<!--Number of days of month-->
+<![CDATA[
+PREFIX time: <http://example.org/timonto/>
+construct  {
+  		?x time:numberOfDayOfMonth 30
+}
+Where {?x time:month ?p.
+       FILTER(?p IN (4, 6, 9, 11))
+}
+]]>
+</body>
+</rule>
+
+<rule>
+<body>
+<!--Number of days of month for leapYear-->
+<![CDATA[
+PREFIX time: <http://example.org/timonto/>
+construct  {
+		?x time:numberOfDayOfMonth ?d
+}
+Where { 
+      ?p a time:Year;
+           time:leapYear ?t;
+           time:hasMonth ?x
+       ?x time:month 2
+       BIND (IF(?t = true, 29, 28) as ?d)
+}
+]]>
+</body>
+</rule>
+
+
+
+</rdf:RDF>
