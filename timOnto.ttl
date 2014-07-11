@@ -1,0 +1,453 @@
+@base <http://example.org/timonto/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+#####################################################################################################
+#																				                                                            #
+#				                  Datatype properties	 						                                      		#
+#								   		 										                                                          #
+#####################################################################################################
+
+
+<century>
+	a			rdf:Property;
+	rdfs:domain	<Century>;
+	rdfs:range	xsd:positiveInteger.
+	
+
+<year>
+	a			rdf:Property;
+	rdfs:domain	<Year>;
+	rdfs:range	xsd:gYear.
+	
+	
+<leapYear>
+	a			rdf:Property;
+	rdfs:domain	<Year>;
+	rdfs:range	xsd:boolean.
+	
+	
+<month>
+	a			rdf:Property;
+	rdfs:domain	<MonthOfYear>;
+	rdfs:range	xsd:gMonth.
+	
+	
+<dayOfMonth>
+	a			rdf:Property;
+	rdfs:domain	<Day>;
+	rdfs:range	xsd:gDay.
+	
+	
+<numberOfDayOfMonth>
+	a			rdf:Property;
+	rdfs:domain	<MonthOfYear>;
+	rdfs:range	xsd:positiveInteger.
+	
+	
+<clockHour>
+	a			rdf:Property;
+	rdfs:domain	<Hour>;
+	rdfs:range	xsd:positiveInteger.
+	
+	
+<number>
+	a			rdf:Property;
+	rdfs:domain	<Date>;
+	rdfs:range	xsd:positiveInteger;
+	rdfs:comment	"Is used to have a modality of Date. For example when we want to use the <Date> 'first Saturday of June' ".
+
+
+<last>
+	a			rdf:Property;
+	rdfs:domain	<Date>;
+	rdfs:range	xsd:boolean;
+	rdfs:comment	"Is used to have the last modality of Date. For example when we want to use the <Date> 'last Saturday of June' ".
+	
+	
+<sample>
+	a			rdf:Property;
+	rdfs:domain	<Date>;
+	rdfs:range	xsd:positiveInteger;
+	rdfs:comment	"Is used to have a sample of Date. For example when we want to use the <Date> 'each three Saturday of June' ".
+	
+	
+<even>
+	a			rdf:Property;
+	rdfs:domain	<Date>;
+	rdfs:range	xsd:boolean;
+	rdfs:comment	"Is used to specify the even parity of Date. If it is an odd date, even property is set to false".
+	
+	
+<beginning>
+	a			rdf:Property;
+	rdfs:domain	<Date>;
+	rdfs:range	xsd:boolean;
+	rdfs:comment	"Is used to specify the beginning part of Date".
+	
+	
+<middle>
+	a			rdf:Property;
+	rdfs:domain	<Date>;
+	rdfs:range	xsd:boolean;
+	rdfs:comment	"Is used to specify the middle part of Date".
+
+
+<end>
+	a			rdf:Property;
+	rdfs:domain	<Date>;
+	rdfs:range	xsd:boolean;
+	rdfs:comment	"Is used to specify the end part of Date".
+	
+
+#####################################################################################################
+#																		                                                            		#
+#				                    Object Properties									                                      #
+#																				                                                            #
+#####################################################################################################
+	
+	
+<hasMonth>
+	a			rdf:Property;
+	rdfs:domain	<Year>;
+	rdfs:range	<Month>.
+	
+	
+<hasDay>
+	a			rdf:Property;
+	rdfs:domain	<Month>;
+	rdfs:range	<Day>.
+	
+	
+<hasHour>
+	a			rdf:Property;
+	rdfs:domain	<Day>;
+	rdfs:range	<Hour>.
+	
+	
+<except>
+	a			rdf:Property;
+	rdfs:domain	<Every>;
+	rdfs:range	<Date>;
+	rdfs:comment	"""Used to specify exceptions within a non-convex interval""".		
+	
+	
+<exp>
+	a			rdf:Property;
+	rdfs:domain	<Convex>, <Every>, <Period>;
+	rdfs:range	<Thing>.
+	
+	
+<atTime>
+	a			rdf:Property;
+	rdfs:domain	<Convex>, <Every>;
+	rdfs:range	<Date>.
+	
+	
+<before>
+	a				rdf:Property;
+	rdfs:domain		<Convex>, <Every>;
+	rdfs:range		<Date>;
+	rdfs:comment		"""To say one thing occur before a specific date""".
+	
+
+<list>
+	a				rdf:Property;
+	rdfs:subPropertyOf	rdfs:member;
+	rdfs:subPropertyOf	<atTime>;
+	rdfs:domain		<Enum>;
+	rdfs:range		<Date>;
+	rdfs:comment		"""Used to link an Enum date with these ordered values""".
+	
+	
+<after>
+	a				rdf:Property;
+	rdfs:domain		<Convex>, <Every>;
+	rdfs:range		<Date>;
+	rdfs:comment		"""To say one thing occur after a specific date""".
+	
+	
+<around>
+	a				rdf:Property;
+	rdfs:domain		<Convex>, <Every>;
+	rdfs:range		<Date>;
+	rdfs:comment		"""To say one thing occur around a specific date""".
+	
+	
+<hasBegin>
+	a				rdf:Property;
+	rdfs:subPropertyOf	<atTime>;
+	rdfs:domain		<During>;
+	rdfs:range		<Date>;
+	rdfs:comment		"""Used to specify the beginning of an interval between date units; a date unit is one year, one month, one day or one hour""".
+					
+					
+<hasEnd>
+	a				rdf:Property;
+	rdfs:subPropertyOf	<atTime>;
+	rdfs:domain		<During>;
+	rdfs:range		<Date>;
+	rdfs:comment		"""Used to specify the end of an interval between date units; a date unit is one year, one month, one day or one hour""".
+
+
+<value>
+	a				rdf:Property;
+	rdfs:domain		<Thing>;
+	rdfs:range		<Thing>.
+
+
+
+#####################################################################################################
+#																		                                                            		#
+#				                   Classes										                                            	#
+#																				                                                            #
+#####################################################################################################
+
+<Thing>
+	a	rdfs:Class.
+
+
+<Date> 	
+	a				rdfs:Class;
+	rdfs:subClassOf	<Thing>;	
+	rdfs:comment		"Represents an abstract date which denotes different kind of date. It can be a simple date i.e. Century, Year, Month, so on or a regular date i.e. on September 2013, on 25 January 2014, so on ".
+	
+	
+<Enum> 	
+	a				rdfs:Class;
+	rdfs:subClassOf	<Date>;
+	rdfs:subClassOf	rdf:Seq; 	
+	rdfs:comment		"Used to enumerate a list of ordered date".
+
+
+<Century>
+	a				rdfs:Class;
+	rdfs:subClassOf	<Date>.
+	
+
+<Year>
+	a				rdfs:Class;
+	rdfs:subClassOf	<Date>.
+	
+
+<Week>
+	a				rdfs:Class;
+	rdfs:subClassOf	<Date>.
+	
+	
+<Day>
+	a				rdfs:Class;
+	rdfs:subClassOf	<Date>.
+	
+	
+<Hour>
+	a				rdfs:Class;
+	rdfs:subClassOf	<Date>.
+	
+	
+<MonthOfYear>
+	a				rdfs:Class;
+	rdfs:subClassOf	<Date>.
+
+
+<DayOfWeek>
+	a				rdfs:Class;
+	rdfs:subClassOf	<Day>.	
+
+	
+<GenericDay>
+	a				rdfs:Class;
+	rdfs:subClassOf	<Day>.
+
+
+<TimeOfDay>
+	a				rdfs:Class;
+	rdfs:subClassOf	<Hour>.	
+	
+
+<Monday>
+	a				rdfs:Class;
+	rdfs:subClassOf	<DayOfWeek>.
+	
+	
+<Tuesday>
+	a				rdfs:Class;
+	rdfs:subClassOf	<DayOfWeek>.
+	
+	
+<Wednesday>
+	a				rdfs:Class;
+	rdfs:subClassOf	<DayOfWeek>.
+	
+	
+<Thursday>
+	a				rdfs:Class;
+	rdfs:subClassOf	<DayOfWeek>.
+	
+	
+<Friday>
+	a				rdfs:Class;
+	rdfs:subClassOf	<DayOfWeek>.
+	
+	
+<Saturday>
+	a				rdfs:Class;
+	rdfs:subClassOf	<DayOfWeek>.
+	
+	
+<Sunday>
+	a				rdfs:Class;
+	rdfs:subClassOf	<DayOfWeek>.
+	
+	
+<Today>
+	a				rdfs:Class;
+	rdfs:subClassOf	<GenericDay>.
+	
+	
+<Tomorrow>
+	a				rdfs:Class;
+	rdfs:subClassOf	<GenericDay>.
+	
+	
+<Yesterday>
+	a				rdfs:Class;
+	rdfs:subClassOf	<GenericDay>.
+	
+
+	
+<Morning>
+	a				rdfs:Class;
+	rdfs:subClassOf	<TimeOfDay>.
+	
+	
+<Afternoon>
+	a				rdfs:Class;
+	rdfs:subClassOf	<TimeOfDay>.
+	
+	
+<Evening>
+	a				rdfs:Class;
+	rdfs:subClassOf	<TimeOfDay>.
+	
+	
+<Night>
+	a				rdfs:Class;
+	rdfs:subClassOf	<TimeOfDay>.
+	
+	
+<Dawn>
+	a				rdfs:Class;
+	rdfs:subClassOf	<TimeOfDay>.
+	
+	
+<Noon>
+	a				rdfs:Class;
+	rdfs:subClassOf	<TimeOfDay>.
+	
+	
+<Dusk>
+	a				rdfs:Class;
+	rdfs:subClassOf	<TimeOfDay>.
+	
+	
+<Midnight>
+	a				rdfs:Class;
+	rdfs:subClassOf	<TimeOfDay>.
+	
+	
+<Period>
+	a				rdfs:Class;
+	rdfs:subClassOf	<Date>;
+	rdfs:comment		"Cast Thing as a reference date".
+
+
+<January>
+	a				rdfs:Class;
+	rdfs:subClassOf	<MonthOfYear>.
+	
+
+<February>
+	a				rdfs:Class;
+	rdfs:subClassOf	<MonthOfYear>.
+	
+	
+<March>
+	a				rdfs:Class;
+	rdfs:subClassOf	<MonthOfYear>.
+	
+	
+<April>
+	a				rdfs:Class;
+	rdfs:subClassOf	<MonthOfYear>.
+	
+	
+<May>
+	a				rdfs:Class;
+	rdfs:subClassOf	<MonthOfYear>.
+	
+	
+<June>
+	a				rdfs:Class;
+	rdfs:subClassOf	<MonthOfYear>.
+	
+	
+<July>
+	a				rdfs:Class;
+	rdfs:subClassOf	<MonthOfYear>.
+	
+	
+<August>
+	a				rdfs:Class;
+	rdfs:subClassOf	<MonthOfYear>.
+	
+	
+<September>
+	a				rdfs:Class;
+	rdfs:subClassOf	<MonthOfYear>.
+	
+	
+<October>
+	a				rdfs:Class;
+	rdfs:subClassOf	<MonthOfYear>.
+	
+	
+<November>
+	a				rdfs:Class;
+	rdfs:subClassOf	<MonthOfYear>.
+	
+	
+<December>
+	a				rdfs:Class;
+	rdfs:subClassOf	<MonthOfYear>.	
+
+
+<Every>
+	a				rdfs:Class;
+	rdfs:subClassOf	<Thing>;
+	rdfs:comment		"""Represents an interval with gaps (non-convex), i.e. a discontinuous interval""".
+
+
+<Convex>
+	a				rdfs:Class;
+	rdfs:subClassOf	<Thing>;
+	rdfs:comment		"""Represents an interval without gap, i.e. a continuous interval""".
+	
+	
+<End>
+	a				rdfs:Class;
+	rdfs:subClassOf	<Convex>;
+	rdfs:comment		"""Represents an open interval which one knows the end""".
+	
+	
+<Start>
+	a				rdfs:Class;
+	rdfs:subClassOf	<Convex>;
+	rdfs:comment		"""Represents an open interval which one knows the beginning""".
+	
+	
+<During>
+	a				rdfs:Class;
+	rdfs:subClassOf	<Convex>;
+	rdfs:comment		"""Represents a closed interval on one simple date; a simple date is a year, a month, a day or an hour""".
