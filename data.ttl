@@ -1,0 +1,575 @@
+@base <http://example.org/data/> .
+@prefix time: <http://example.org/timonto/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+
+# 1a- L'Islam est apparu au 11 siècle
+# start(atTime(century(11)), Islam)
+[a	time:Start;
+	time:atTime	[a	time:Century;
+					time:century	11];
+	time:exp		[a	time:Thing;
+					time:value	<Islam1>]].
+
+# 1b- L'Islam est apparu vers le 11 siècle
+# start(around(century(11)), Islam)
+[a	time:Start;
+	time:around	[a	time:Century;
+					time:century	11];
+	time:exp		[a	time:Thing;
+					time:value 	<Islam2>]].
+
+# 2a- Avant l'Islam, on pratiquait le Bukut
+# during(before(period(Islam)), Thing(Bukut))
+[a	time:During;
+	time:before	[a	time:Period;
+					time:exp 		[a	time:Thing;
+									time:value 	<Islam1>]];
+	time:exp		[a	time:Thing;
+					time:value 	<Bukut1>]].
+					
+# 2b- Avant l'Islam, on pratiquait le Bukut tous les samedi
+# during(before(period(Islam)), 
+#        every(week
+#			during(atTime(Saturday), Thing(Bukut))))
+[a	time:During;
+	time:before	[a	time:Period;
+					time:exp 	[a	time:Thing;
+								time:value 	<Islam1>]];
+	time:exp		[a	time:Every;
+					time:atTime	[a	time:Week];
+					time:exp		[a	time:During;
+									time:atTime	[a	time:Saturday];
+									time:exp		[a	time:Thing;
+													time:value 	<Bukut2>]]]].					
+
+# 2c- Avant l'Islam, on pratiquait le Bukut tous les samedi matin
+# during(before(period(Islam)), 
+#        every(week,
+#			during(atTime(Saturday), Thing(Bukut))))
+[a	time:During;
+	time:before	[a	time:Period;
+					time:exp 	[a	time:Thing;
+								time:value 	<Islam1>]];
+	time:exp		[a	time:Every;
+					time:atTime	[a	time:Week];
+					time:exp		[a	time:During;
+									time:atTime	[a	time:Saturday;
+													time:hasHour	[a	time:Morning]];
+									time:exp		[a	time:Thing;
+													time:value 	<Bukut3>]]]].	
+
+# 3- Tous les premiers samedi de chaque mois on organise un Simb
+# every(month, 
+#       during(number(1, Saturday), Thing(Simb)))
+[a	time:Every;
+	time:atTime	[a	time:MonthOfYear];
+	time:exp		[a	time:During;
+					time:atTime	[a	time:Saturday;
+									time:number	1];
+					time:exp		[a	time:Thing;
+									time:value	<Simb1>]]].
+
+
+# 4- Tous les derniers samedi de chaque année on organise un Simb
+# every(year, 
+#       during(last(Saturday), 
+#              fact(Simb)))
+[a	time:Every;
+	time:atTime	[a	time:Year];
+	time:exp		[a	time:During;
+					time:atTime	[a	time:Saturday;
+									time:last		true];
+					time:exp		[a	time:Thing;
+									time:value 	<Simb2>]]].
+									
+# 5a- Chaque lundi on organise un Simb
+# every(week, 
+#       during(monday, 
+#              fact(Simb)))
+[a	time:Every;
+	time:atTime	[a	time:Week];
+	time:exp		[a	time:During;
+					time:atTime	[a	time:Monday];
+					time:exp		[a	time:Thing;
+									time:value 	<Simb3>]]].
+
+# 5b- Les samedis de chaque 2 semaines on organise un Simb
+# every(sample(2, week), 
+#       during(Saturday, 
+#              fact(Simb)))
+[a	time:Every;
+	time:atTime	[a	time:Week;
+					time:sample	2];
+	time:exp		[a	time:During;
+					time:atTime	[a	time:Saturday];
+					time:exp		[a	time:Thing;
+									time:value 	<Simb4>]]].
+
+# 6a- La Bataille de Dékheulé a eu lieu en Octobre 1886
+# during(date(1886, October)
+#	    thing(BattleOfDerkheule)).
+[a	time:During;
+	time:atTime	[a	time:Year;
+					time:year		1886;
+					time:hasMonth	[a	time:October]];
+	time:exp		[a	time:Thing;
+					time:value	<BattleOfDerkheule>]].
+									
+# 6b- Avant la Bataille de Dékheulé, tous les 3 mois on organisait un Simb
+# during(before(period(BattleOfDerkheulé)),
+#        every(sample(3, month),  
+#			fact(Simb)))
+[a	time:During;
+	time:before	[a	time:Period;
+					time:exp 		[a	time:Thing;
+									time:value 	<BattleOfDerkheule>]];
+	time:exp		[a	time:Every;
+					time:atTime	[a	time:MonthOfYear;
+									time:sample	3];
+					time:exp		[a	time:Thing;
+									time:value 	<Simb5>]]].
+
+# 7-Le Bukut est organisé 3 fois tous les 5 ans
+# every(sample(5, year), 
+#	   fact(3, Bukut))
+[a	time:Every;
+	time:atTime	[a	time:Year;
+					time:sample	5];
+	time:exp		[a	time:Thing;
+					time:value	<Bukut2>;
+					<occurrence>	3]].
+
+# 8-Durant le Bukut on pratique le Bugourabou
+# during(period(Bukut), Thing(Bugourabou))
+[a	time:During;
+	time:atTime	[a	time:Period;
+					time:exp 		[a	time:Thing;
+									time:value	<Bukut1>]];
+	time:exp		[a	time:Thing;
+					time:value 	<Bugourabou>]].
+
+# 9-Chaque trois mois impair on organise le Bugourabou
+# every(sample(3, month), Thing(Bugourabou))
+[a	time:Every;
+	time:atTime	[a	time:MonthOfYear;
+					time:sample		3;
+					time:even			false];
+	time:exp		[a	time:Thing;
+					time:value		<Bugourabou2>]].
+
+# 10-Le dernier dimanche de chaque mois pair on organise un Simb
+#every(even(month), 
+#      during(last(sunday), 
+#             Thing(Simb)))
+[a	time:Every;
+	time:atTime	[a	time:MonthOfYear;
+					time:even		true];
+	time:exp		[a	time:During;
+					time:atTime	[a	time:Sunday;
+									time:last		true];
+					time:exp		[a	time:Thing;
+									time:value	<Simb7>]]].
+
+# 11- Le premier samedi de chaque mois de décembre on organise un Simb
+#every(year, 
+#      during(time(december, number(1, saturday)), 
+#             Thing(Simb)))
+[a	time:Every;
+	time:atTime	[a	time:Year];
+	time:exp		[a	time:During;
+					time:atTime	[a	time:December;
+									time:hasDay  	[a	time:Saturday;
+							                    		time:number    1]];
+					time:exp		[a	time:Thing;
+									time:value 	<Simb8>]]].
+
+# 12- Chaque trois lundi on organise un Simb
+#every(sample(3, week), 
+#      during(monday, 
+#             Thing(Simb)))
+[a	time:Every;
+	time:atTime	[a	time:Week;
+					time:sample	3];
+	time:exp		[a	time:During;
+					time:atTime	[a	time:Monday];
+					time:exp		[a	time:Thing;
+									time:value <Simb9>]]].
+
+# 13- Chaque 3ième Lundi de chaque mois on organise un Simb
+#every(month, 
+#     during(number(3, monday), Thing(Simb)))
+[a	time:Every;
+	time:atTime	[a	time:MonthOfYear];
+	time:exp		[a	time:During;
+					time:atTime	[a	time:Monday;
+									time:number	3];
+					time:exp		[a	time:Thing;
+									time:value 	<Simb10>]]].
+
+#14a- Chaque 26 mars on organise un Simb
+#every(year, 
+#     during(date(march, 26), Thing(Simb)))
+[a	time:Every;
+	time:atTime	[a	time:Year];
+	time:exp		[a	time:During;
+					time:atTime	[a	time:March;
+									time:hasDay	[a	time:Day;
+													time:dayOfMonth	26]];
+					time:exp		[a	time:Thing;
+									time:value 	<Simb11>]]].
+
+#14b- Le Samedi 28 Juin 2014 on organise un Simb
+#during(date(2014, june, 28, Saturday), Thing(Simb))
+[a	time:During;
+	time:atTime	[a 	time:Year;
+					time:year	2014;
+					time:hasMonth   [a	time:June;
+						     		time:hasDay   [a    time:Saturday;
+								      				time:dayOfMonth     30]]];
+	time:exp		[a	time:Thing;
+					time:value <Simb12>]].
+					
+#during(date(2014, july, 2, Wednesday), Thing(Simb))
+[a	time:During;
+	time:atTime	[a 	time:Year;
+					time:year	2014;
+					time:hasMonth   [a	time:July;
+						     		time:hasDay   [a    time:Wednesday;
+								      				time:dayOfMonth     2]]];
+	time:exp		[a	time:Thing;
+					time:value <Simb102>]].
+					
+
+
+# 14c- Le 25 de chaque mois excepté le mois juiilet on organise un Simb
+#every(month, 
+#      during(dayOfMonth(25), Thing(Simb)))
+[a	time:Every;
+	time:atTime	[a	time:MonthOfYear];
+	time:except	[a	time:June];
+	time:exp		[a	time:During;
+					time:atTime	[a	time:Day;
+									time:dayOfMonth	25];
+					time:exp		[a	time:Thing;
+									time:value		<Simb13>]]].
+
+#14d- En janvier 2016 on organise un Simb
+#during(date(2016, january), Thing(Simb))
+[a	time:During;
+	time:atTime	[a	time:Year;
+					time:year		2016;
+					time:hasMonth	[a	time:January]];
+	time:exp		[a	time:Thing;
+					time:value 	<Simb14>]].
+
+# 14f- Le matin de chaque 26 mars on organise un Simb
+#every(year, 
+#      during(time(march, 26, morning), 
+#             Thing(Simb)))
+[a	time:Every;
+	time:atTime	[a   time:Year];
+	time:exp		[a	time:During;
+					time:atTime   [a	time:March;
+					           		time:hasDay	[a	time:Day;
+													time:dayOfMonth	26;
+													time:hasHour 		[a    time:Morning]]];
+					time:exp	     [a	time:Thing;
+									time:value   <Simb15>]]].
+
+#15- De 2010 à 2019, les lundi et jeudi de chaque semaine on organise un Simb
+#during(year(2010), year(2019), 
+#         every(week, 
+#               during(enum(monday, thursday), 
+#                    Thing(Simb)))))
+[a	time:During;
+	time:hasBegin	[a	time:Year;
+					time:year		2010];
+	time:hasEnd	[a	time:Year;
+					time:year		2019];
+	time:exp		[a	time:Every;
+					time:atTime	[a	time:Week];
+					time:exp		[a	time:During;
+									time:atTime	[a	time:Enum;
+													time:list		 ([a	time:Monday] [a time:Thursday])];
+									time:exp		[a	time:Thing;
+													time:value	<Simb16>]]]].
+
+#16- Chaque samedi on organise le Simb excepté le troisième samedi
+#every(week, 
+#      except(sample(3, week), 
+#         during(saturday, Thing(Simb))))
+[a	time:Every;
+	time:atTime	[a	time:Week];
+	time:except	[a	time:Week;
+					time:sample	3];
+	time:exp		[a	time:During;
+					time:atTime	[a	time:Saturday];
+					time:exp		[a	time:Thing;
+									time:value <Simb17>]]].
+
+# 16b- Chaque samedi on organise le Simb excepté le troisième samedi du mois
+#every(month, 
+#      every(week, 
+#	        except(number(3, week), 
+#        	          during(saturday, Thing(Simb))))
+[a	time:Every;
+	time:atTime	[a	time:MonthOfYear];
+	time:exp		[a	time:Every;  
+					time:atTime	[a	time:Week];
+					time:except	[a	time:Week;
+									time:number	3];
+					time:exp		[a	time:During;
+									time:atTime	[a	time:Saturday];
+									time:exp		[a	time:Thing;
+													time:value	<Simb19>]]]].
+
+# 17- Chaque samedi on organise le Simb excepté durant la période du Ramadan
+#every(week, 
+#      except(period(Ramadan)), 
+#      during(saturday, Thing(Simb)))
+[a	time:Every;
+	time:atTime	[a	time:Week];
+	time:except	[a	time:Period;
+					time:exp		[a	time:Thing;
+									time:value <Ramadan>]];
+	time:exp		[a	time:During;
+					time:atTime	[a	time:Saturday];
+					time:exp		[a	time:Thing;
+									time:value <Simb20>]]].
+
+# 18a- De 2004 à 2014 on organise tous les Samedi un Simb
+#during((year(2004), year(2014)), 
+#       every(week, 
+#             during(saturday, 
+#                    Thing(Simb))))
+[a	time:During;
+	time:hasBegin	[a	time:Year;
+					time:year		2004];
+	time:hasEnd	[a	time:Year;
+					time:year		2014];
+	time:exp		[a	time:Every;
+					time:atTime	[a	time:Week];
+					time:exp		[a	time:During;
+									time:atTime	[a	time:Saturday];
+									time:exp		[a	time:Thing;
+													time:value 	<Simb21>]]]].
+
+# 18b- Du mois de Janvier au mois de Février de chaque année, on organise tous les Samedi un Simb
+#every(year, 
+#       during((january, february), 
+#              every(week,  during(saturday, Thing(Simb))))))
+[a    time:Every;
+      time:atTime	[a	time:Year];
+      time:exp		[a   time:During;
+		       		time:hasBegin	[a	time:January];
+		       		time:hasEnd	[a   time:February];
+		       		time:exp	  	[a   time:Every;
+				        				time:atTime	[a	time:Week];
+				        				time:exp		[a   time:During;
+						      						time:atTime 	[a 	time:Saturday];
+						     						time:exp		[a   time:Thing;
+						                         						time:value	<Simb22>]]]]].
+
+# 18c- Du mois de Janvier au mois de Février de 2004 à 2014, on organise tous les Samedi et lundi un Simb 
+#during((year(2004), year(2014)), 
+#       every(year, 
+#       during((january, february), 
+#              every(week, 
+#                    during(enum(saturday, monday), Thing(Simb))))))
+[a	time:During;
+	time:hasBegin	[a	time:Year;
+					time:year		2004];
+	time:hasEnd	[a	time:Year;
+					time:year		2014];
+	time:exp		[a	time:Every;
+					time:atTime	[a	time:Year];
+					time:exp		[a	time:During;
+									time:hasBegin	[a  time:January];
+									time:hasEnd	[a  time:February];
+									time:exp		[a  time:Every;
+												    time:atTime [a  time:Week];
+												    time:exp	 [a	time:During;
+																time:atTime [a time:Enum;
+																		     time:list	   ([a time:Monday] [a time:Saturday])];
+																time:exp	  [a	time:Thing;
+										        								time:value 	<Simb23>]]]]]].
+
+#18d- Chaque année du mois de mars au mois de juin c'est le printemps
+#every(year,
+#      during(march, june),
+#             Thing(spring)))
+[a	time:Every;
+	time:atTime	[a	time:Year];
+	time:exp		[a	time:During;
+					time:hasBegin	[a	time:March];
+					time:hasEnd	[a	time:June];
+					time:exp		[a	time:Thing;
+									time:value	<Spring>]]].
+
+#18e- Durant les mois de Janvier, Mars et de Juillet de chaque année, on organise tous les Samedi un Simb
+#every(year, 
+#      during(enum((january, march, july), 
+#             every(week, 
+#                   during(saturday, Thing(Simb))))))
+[a	time:Every;
+	time:atTime	[a	time:Year];
+	time:exp		[a	time:During;
+					time:atTime	[a	time:Enum;
+									time:list		([a	time:January] [a  time:March] [a  time:July])];
+					time:exp		[a	time:Every;
+									time:atTime	[a	time:Week];
+									time:exp		[a	time:During;
+													time:atTime	[a	time:Saturday];
+													time:exp		[a	time:Thing;
+																	time:value	<Simb24>]]]]].
+
+#18f- Durant les mois de Janvier, Mars et de Juillet 2016, on organise tous les Samedi un Simb
+#during(year(2016), 
+#       during(enum((january, march, july), 
+#              every(week, 
+#                   during(saturday, Thing(Simb))))))
+[a	time:During;
+	time:atTime	[a	time:Year;
+					time:year			2016];
+	time:exp		[a	time:During;
+					time:atTime    	[a	time:Enum;
+										time:list		([a	time:January]	[a	time:March]	[a	time:July])];
+					time:exp			[a	time:Every;
+										time:atTime    [a   time:Week];
+										time:exp	     [a	time:During;
+														time:atTime 	[a	time:Saturday];
+							 							time:exp	  	[a	time:Thing;
+									        								time:value	<Simb25>]]]]].
+									        								
+#19- Every morning I take a shower
+#every(day,
+#     during(morning, Thing(Shower)))
+[a	time:Every;
+	time:atTime	[a	time:Day];
+	time:exp		[a	time:During;
+					time:atTime	[a	time:Morning];
+					time:exp		[a	time:Thing;
+									time:value	<Shower>]]].
+
+#20- A partir de 2015, chaque vendredi matin on organise un Simb
+#start(year(2015), 
+#      every(week,
+#     	   during(time(friday, morning), Thing(Simb))))
+[a	time:Start;
+	time:atTime	[a	time:Year;
+					time:year		2015];
+	time:exp		[a	time:Every;
+					time:atTime    [a	time:Week];
+					time:exp	     [a	time:During;
+									time:atTime	[a   time:Friday;
+									       			time:hasHour	[a   time:Morning]];
+									time:exp		[a	time:Thing;
+													time:value	<Simb26>]]]].
+
+#21- Chaque 4 ans d'année paire, on organise les jeux olympique.
+#every(sample(2, even(year)),
+#      Thing(OlympicGames))
+[a	time:Every;
+	time:atTime	[a	time:Year;
+					time:sample	2;
+					time:even		true];
+	 time:exp		[a	time:Thing;
+					time:value	<OlympicGames>]].
+
+#22a- Chaque mois pair en 2016 on organise du Simb
+#during(year(2016),
+#	   every(even(month), Thing(Simb)))
+[a	time:During;
+	time:atTime	[a	time:Year;
+					time:year		2016];
+	time:exp		[a	time:Every;
+					time:atTime	[a	time:MonthOfYear;
+									time:even		true];
+					 time:exp		[a	time:Thing;
+									time:value	<Simb27>]]].
+				
+#22b - Chaque mois impair d'année paire on organise du Simb
+#every(even(year), every(odd(month),  Thing(Simb)))
+[a	time:Every;
+	time:atTime	[a	time:Year;
+					time:even		true];
+	time:exp		[a 	time:Every;
+					time:atTime	[a	time:MonthOfYear;
+									time:even		false];
+					time:exp		[a	time:Thing;
+									time:value	<Simb28>]]].
+									
+
+#23 - every(year,
+#           during(date(december, 25), fact(christmas)))
+[a 	time:Every;
+	time:atTime	[a	time:Year];
+	time:exp		[a	time:During;
+					time:atTime	[a	time:MonthOfYear;
+									time:month		12;
+									time:hasDay		[a	time:Day;
+														time:dayOfMonth	25]];
+					time:exp		[a	time:Thing;
+									time:value		<Christmas>]]].
+
+#24 - every(year,
+#           during(July, fact(RapAttack)))					
+[a 	time:Every;
+	time:atTime	[a	time:Year];
+	time:exp		[a	time:During;
+					time:atTime	[a 	time:MonthOfYear;
+									time:month		7];
+					time:exp		[a	time:Thing;
+									time:value		<RapAttack1>]]].
+									
+
+#24b - every(year,
+#           during(date(June, 30), fact(RapAttack)))					
+[a 	time:Every;
+	time:atTime	[a	time:Year];
+	time:exp		[a	time:During;
+					time:atTime	[a 	time:MonthOfYear;
+									time:month		6;
+									time:hasDay		[a	time:Day;
+														time:dayOfMonth	30]];
+					time:exp		[a	time:Thing;
+									time:value		<RapAttack2>]]].
+									
+#24c - every(month,
+#           during(dayOfMonth(28), fact(RapAttack)))					
+[a 	time:Every;
+	time:atTime	[a	time:MonthOfYear];
+	time:exp		[a	time:During;
+					time:atTime	[a	time:Day;
+									time:dayOfMonth	28];
+					time:exp		[a	time:Thing;
+									time:value		<RapAttack3>]]].
+									
+#25- every(year,Thing(Ramadan))
+[a 	time:Every;
+	time:atTime	[a	time:Year];
+	time:exp		[a	time:Thing;
+					time:value	<Ramadan>]].
+					
+#26 - every(year,
+#      during(interval(August, October), Thing(Hivenage)))
+[a	time:Every;
+	time:atTime	[a	time:Year];
+	time:exp		[a	time:During;
+					time:hasBegin	[a	time:August];
+					time:hasEnd	[a	time:October];
+					time:exp		[a	time:Thing;
+									time:value	<Wintering>]]].
+									
+#27 - during(date(2015,01,3), Thing(RapAttack4))	
+[a	time:During;
+	time:atTime	[a	time:Year;
+					time:year		2015;
+					time:hasMonth	[a	time:January;
+									time:hasDay	[a	time:Day;
+													time:dayOfMonth	3]]];
+	time:exp		[a	time:Thing;
+					time:value	<RapAttack4>]].
