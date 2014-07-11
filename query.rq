@@ -1,0 +1,229 @@
+#Events during the 11 century.
+prefix dt: <http://example.org/timonto/>
+template {
+  st:apply-templates-with(st:turtle, ?p)
+}
+where {
+  ?p ?r  [a	dt:Century;
+			dt:century 11]
+}
+
+
+#Events before Islam1
+prefix dt: <http://example.org/timonto/>
+prefix data: <http://example.org/data/>
+template {
+  st:apply-templates-with(st:turtle, ?p)
+}
+where {
+    ?p dt:before/dt:exp/dt:value data:Islam1
+}
+
+
+#Events on Saturday
+prefix dt: <http://example.org/timonto/>
+template {
+  st:apply-templates-with(st:turtle, ?p)
+}
+where {
+  ?p dt:exp ?e.
+{
+   {?e dt:atTime/rdf:type dt:Saturday}
+UNION 
+    {?e dt:atTime [a dt:Enum;
+                     dt:list/rdf:rest*/rdf:first/rdf:type  dt:Saturday]
+	}
+}
+}
+
+#Events on even date
+prefix dt: <http://example.org/timonto/>
+template {
+  st:apply-templates-with(st:turtle, ?e)
+}
+where {
+  ?e ?g ?o ;
+      dt:atTime/dt:even true
+}
+
+
+#Events on weekend
+prefix dt: <http://example.org/timonto/>
+PREFIX data: <http://example.org/data/>
+template {
+  st:apply-templates-with(st:turtle, ?e)
+}
+where {
+  {
+    {?e ?g [ dt:atTime/rdf:type data:WeekEnd]}
+ UNION
+    {?e ?g [a dt:Enum;
+              dt:list/rdf:rest*/rdf:first/rdf:type  data:WeekEnd]}
+  }
+}
+
+
+#Events on 3 months from today
+#There are some noises, like events on even/odd years
+PREFIX time: <http://example.org/timonto/>
+template {
+  st:apply-templates-with(st:turtle, ?x)
+}
+where {
+  {
+      {#punctual events
+      BIND(YEAR(NOW()) as ?y)
+      BIND(MONTH(NOW()) as ?m)
+      BIND(DAY(NOW()) as ?d)
+      ?x time:atTime [ time:year ?y ;
+                       time:hasMonth/time:month ?z;
+                       time:hasMonth/time:hasDay/time:dayOfMonth ?f]
+      FILTER(?m <= ?z)
+      FILTER(?z< ?m +2)
+      FILTER(?d<=?f)}
+ UNION
+    {#weekly events 
+     ?x a time:Every;
+        time:atTime/rdf:type time:Week}
+ UNION
+    {#monthly events
+     BIND(MONTH(NOW()) as ?m)
+     ?x a time:Every;
+        time:atTime/rdf:type time:MonthOfYear
+     FILTER NOT EXISTS {?x time:except/time:month ?z
+                        FILTER(?m <= ?z)
+       			    FILTER(?z< ?m +2)}
+     BIND( IF(?m IN (1,3,5,7,9,11), true, false) as ?t) #handle even/odd month
+     FILTER NOT EXISTS{?x time:atTime/time:even ?t} 
+     }
+ UNION
+    {#yearly events
+     	{#Events on the year asked
+     	BIND(MONTH(NOW()) as ?m) 
+     	?x  a time:Every ;
+              time:atTime/rdf:type time:Year;
+              time:exp/time:atTime/time:month ?n
+          FILTER(?m <= ?n)
+     	FILTER(?n <= ?m + 2)}
+       UNION
+       	 {#If the interval is between 2 years
+     	 BIND(MONTH(NOW()) as ?m) 
+  		 BIND( IF(?m +2 > 12, (?m+2) - 12, 0) as ?m2)
+    		 ?x  a time:Every ;
+       	     time:atTime/rdf:type time:Year;
+       	     time:exp/time:atTime/time:month ?n
+    		 FILTER(?n <= ?m2)}
+     }
+ }
+}
+
+
+#Events on 7 days from today (NEW VERSION)
+PREFIX time: <http://example.org/timonto/>
+template {
+  st:apply-templates-with(st:turtle, ?x)
+}
+where {
+{
+  {#punctual events
+   {
+	{#If interval is between 2 years (end of December)
+	 BIND(YEAR(NOW()) as ?y)
+      BIND(MONTH(NOW()) as ?m)
+      BIND(DAY(NOW()) as ?d)
+      BIND(IF(?d+6 > 31, 6 - (31-?d), 0) as ?d2)
+      BIND(IF(?m = 12, 1, 0) as ?m2)
+      BIND(?y+1 as ?y2)
+      ?x time:atTime [
+	            time:year ?y2;
+      	       time:hasMonth [
+      		          time:month ?m2;
+      		          time:hasDay/time:dayOfMonth ?z]]
+      FILTER ( ?z <= ?d2)}
+   UNION
+      {#If interval is between 2 months
+      BIND(YEAR(NOW()) as ?y)
+      BIND(MONTH(NOW()) as ?m)
+      BIND(DAY(NOW()) as ?d)
+      ?x2 time:atTime [
+	       time:year ?y;
+      	  time:hasMonth [
+      		time:month ?m;
+               time:numberOfDayOfMonth ?e]]
+      BIND(IF(?d+6 > ?e, 6 - (?e-?d), 0) as ?d2)
+      BIND( (?m+1) as ?m2)
+      ?x time:atTime [
+	        time:year ?y;
+      	   time:hasMonth [
+      		      time:month ?m2;
+      		      time:hasDay/time:dayOfMonth ?z]]
+      FILTER ( ?z <= ?d2 )} 
+  UNION
+    {#Events in the month asked
+      BIND(YEAR(NOW()) as ?y)
+      BIND(MONTH(NOW()) as ?m)
+      BIND(DAY(NOW()) as ?d) 
+      ?x time:atTime [
+	      time:year ?y;
+      	 time:hasMonth [
+      		time:month ?m;
+      		time:hasDay/time:dayOfMonth ?z]]
+      FILTER ( ?d <= ?z)
+      FILTER ( ?z <= ?d + 6)}
+   }     
+}
+UNION
+    {#weekly events (there is an except to verify here)
+     ?x a time:Every;
+        time:atTime/rdf:type time:Week}
+UNION
+  {#monthly events
+     {#Events on the month asked
+     BIND(MONTH(NOW()) as ?m)
+     BIND(DAY(NOW()) as ?d) 
+     ?x a time:Every;
+        time:atTime/rdf:type time:MonthOfYear;
+        time:exp/time:atTime/time:dayOfMonth ?n.
+     FILTER NOT EXISTS {?x time:except/time:month ?m}
+     FILTER(?n >= ?d)
+     Filter(?n <= ?d+6)}
+  UNION
+     {#IF interval is between 2 months (it remains when the query is done on February for a leap year)
+     BIND(MONTH(NOW()) as ?m)
+     BIND(DAY(NOW()) as ?d) 
+     ?x a time:Every;
+        time:atTime/rdf:type time:MonthOfYear;
+        time:exp/time:atTime/time:dayOfMonth ?n.
+     BIND(IF (?m IN(4, 6, 9, 11), 30, IF(?m = 2, 28, 31)) as ?d1)
+     BIND(IF(?d+6 > ?d1, 6 - (?d1-?d), 0) as ?d2)
+     FILTER NOT EXISTS {BIND(?m+1 as ?m2)
+                        ?x time:except/time:month ?m2}
+     Filter(?n <= ?d2)}
+  }
+UNION
+  {#yearly events
+     {#Events on the year asked
+     BIND(MONTH(NOW()) as ?m) 
+     BIND(DAY(NOW()) as ?d) 
+     ?x a time:Every;
+        time:atTime/rdf:type time:Year;
+        time:exp/time:atTime/time:month ?m;
+        time:exp/time:atTime/time:hasDay/time:dayOfMonth ?n.
+     FILTER NOT EXISTS {?x time:except/time:atTime ?m}
+     FILTER(?d <= ?n)
+     FILTER(?n <= ?d+6)}
+  UNION
+     {#If the 7 days are between 2 years
+     BIND(MONTH(NOW()) as ?m) 
+     BIND(DAY(NOW()) as ?d) 
+     BIND(IF(?d+6 > 31, 6 - (31-?d), 0) as ?d2)
+     BIND(IF(?m = 12, 1, 0) as ?m2)
+     ?x a time:Every;
+        time:atTime/rdf:type time:Year;
+        time:exp/time:atTime/time:month ?m2;
+        time:exp/time:atTime/time:hasDay/time:dayOfMonth ?n.
+     FILTER NOT EXISTS {?x time:except/time:atTime ?m2}
+     FILTER ( ?n <= ?d2)}
+  }
+ }
+}
